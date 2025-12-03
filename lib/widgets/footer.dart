@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Footer extends StatelessWidget {
   const Footer({super.key});
@@ -46,9 +47,64 @@ class Footer extends StatelessWidget {
           const SizedBox(height: 16),
           Divider(color: Colors.grey[300]),
           const SizedBox(height: 8),
-          Text(
-            '© ${DateTime.now().year} Union Shop',
-            style: const TextStyle(color: Colors.grey, fontSize: 12),
+          Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  '© 2025, ',
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/',
+                      (route) => false,
+                    );
+                  },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    minimumSize: const Size(0, 0),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  child: const Text(
+                    'upsu-store',
+                    style: TextStyle(
+                      color: Color(0xFF4d2963),
+                      fontSize: 12,
+                      decoration: TextDecoration.none,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                const Text(
+                  '•',
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+                const SizedBox(width: 12),
+                TextButton(
+                  onPressed: () async {
+                    final uri = Uri.parse(
+                        'https://www.shopify.com/uk?utm_campaign=poweredby&utm_medium=shopify&utm_source=onlinestore');
+                    await launchUrl(uri, mode: LaunchMode.externalApplication);
+                  },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    minimumSize: const Size(0, 0),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  child: const Text(
+                    'Powered by Shopify',
+                    style: TextStyle(
+                      color: Color(0xFF4d2963),
+                      fontSize: 12,
+                      decoration: TextDecoration.none,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
