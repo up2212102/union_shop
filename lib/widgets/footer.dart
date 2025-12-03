@@ -8,33 +8,46 @@ class Footer extends StatelessWidget {
     return Container(
       width: double.infinity,
       color: Colors.grey[50],
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Wrap(
-            spacing: 32,
-            runSpacing: 12,
-            children: [
-              _FooterSection(
-                title: 'SHOP',
-                items: ['Collections', 'Sale', 'New In'],
-              ),
-              _FooterSection(
-                title: 'HELP',
-                items: ['Contact', 'Delivery', 'Returns'],
-              ),
-              _FooterSection(
-                title: 'LEGAL',
-                items: ['Privacy', 'Terms'],
-              ),
-            ],
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final isWide = constraints.maxWidth >= 800;
+              return Center(
+                child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 1000),
+                  child: isWide
+                      ? const Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(flex: 3, child: _OpeningHours()),
+                            SizedBox(width: 8),
+                            Expanded(flex: 2, child: _HelpInfo()),
+                            SizedBox(width: 8),
+                            Expanded(flex: 3, child: _SubscribeBox()),
+                          ],
+                        )
+                      : const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _OpeningHours(),
+                            SizedBox(height: 24),
+                            _HelpInfo(),
+                            SizedBox(height: 24),
+                            _SubscribeBox(),
+                          ],
+                        ),
+                ),
+              );
+            },
           ),
           const SizedBox(height: 16),
           Divider(color: Colors.grey[300]),
           const SizedBox(height: 8),
           Text(
-            '© ${DateTime.now().year} Union Shop — Dummy footer for coursework',
+            '© ${DateTime.now().year} Union Shop',
             style: const TextStyle(color: Colors.grey, fontSize: 12),
           ),
         ],
@@ -43,32 +56,150 @@ class Footer extends StatelessWidget {
   }
 }
 
-class _FooterSection extends StatelessWidget {
-  final String title;
-  final List<String> items;
-  const _FooterSection({required this.title, required this.items});
+class _OpeningHours extends StatelessWidget {
+  const _OpeningHours();
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 200,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Opening Hours',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+        ),
+        SizedBox(height: 14),
+        Text('❄️ Winter Break Closure Dates ❄️',
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        SizedBox(height: 10),
+        Text('Closing 4pm 19/12/2025', style: TextStyle(fontWeight: FontWeight.bold)),
+        SizedBox(height: 10),
+        Text('Reopening 10am 05/01/2026', style: TextStyle(fontWeight: FontWeight.bold)),
+        SizedBox(height: 10),
+        Text('Last post date: 12pm on 18/12/2025', style: TextStyle(fontWeight: FontWeight.bold)),
+        SizedBox(height: 10),
+        Text('------------------------', style: TextStyle(fontWeight: FontWeight.bold)),
+        SizedBox(height: 10),
+        Text('(Term Time)', style: TextStyle(fontWeight: FontWeight.bold)),
+        SizedBox(height: 10),
+        Text('Monday - Friday 10am - 4pm', style: TextStyle(fontWeight: FontWeight.bold)),
+        SizedBox(height: 10),
+        Text('(Outside of Term Time / Consolidation Weeks)',
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        SizedBox(height: 10),
+        Text('Monday - Friday 10am - 3pm', style: TextStyle(fontWeight: FontWeight.bold)),
+        SizedBox(height: 10),
+        Text('Purchase online 24/7', style: TextStyle(fontWeight: FontWeight.bold)),
+      ],
+    );
+  }
+}
+
+class _SubscribeBox extends StatefulWidget {
+  const _SubscribeBox();
+
+  @override
+  State<_SubscribeBox> createState() => _SubscribeBoxState();
+}
+
+class _SubscribeBoxState extends State<_SubscribeBox> {
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Latest Offers',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: const Color(0xFFE5E7EB)),
+            borderRadius: BorderRadius.circular(8),
           ),
-          const SizedBox(height: 8),
-          ...items.map((i) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 2),
-                child: Text(i, style: const TextStyle(color: Colors.grey)),
-              )),
-        ],
-      ),
+          clipBehavior: Clip.hardEdge,
+          child: Row(
+            children: [
+              Expanded(
+                flex: 10,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                  child: TextField(
+                    controller: _controller,
+                    decoration: const InputDecoration(
+                      hintText: 'Email address',
+                      border: InputBorder.none,
+                      isDense: true,
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 40,
+                child: TextButton(
+                  onPressed: () {
+                    final email = _controller.text.trim();
+                    if (email.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Please enter an email address')),
+                      );
+                      return;
+                    }
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Subscribed: $email')),
+                    );
+                    _controller.clear();
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: const Color(0xFF4d2963),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                    minimumSize: const Size(140, 40),
+                  ),
+                  child: const Text('Subscribe'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _HelpInfo extends StatelessWidget {
+  const _HelpInfo();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+            Text(
+              'Help and Information',
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+              maxLines: 1,
+              softWrap: false,
+              overflow: TextOverflow.ellipsis,
+            ),
+        SizedBox(height: 14),
+        Text('Search'),
+        SizedBox(height: 10),
+            Text('Terms & Conditions of Sale'),
+        SizedBox(height: 10),
+            Text('Policy'),
+      ],
     );
   }
 }
