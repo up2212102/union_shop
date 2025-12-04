@@ -40,6 +40,9 @@ class SalePage extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),
+                  // Non-functional filter dropdown
+                  const _FilterControl(),
+                  const SizedBox(height: 12),
                   GridView.builder(
                     itemCount: saleProducts.length,
                     physics: const NeverScrollableScrollPhysics(),
@@ -131,6 +134,64 @@ class _SaleCard extends StatelessWidget {
                   style: TextStyle(color: Colors.white, fontSize: 12)),
             ),
           )
+        ],
+      ),
+    );
+  }
+}
+
+class _FilterControl extends StatefulWidget {
+  const _FilterControl();
+
+  @override
+  State<_FilterControl> createState() => _FilterControlState();
+}
+
+class _FilterControlState extends State<_FilterControl> {
+  String current = 'All Products';
+  static const options = [
+    'All Products',
+    'Clothing',
+    'Merchandise',
+    'PSUT',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.center,
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: 10,
+        runSpacing: 8,
+        children: [
+          const Text(
+            'Filter By:',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          PopupMenuButton<String>(
+            initialValue: current,
+            onSelected: (val) => setState(() => current = val),
+            itemBuilder: (context) => options
+                .map((o) => PopupMenuItem<String>(value: o, child: Text(o)))
+                .toList(),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                border: Border.all(color: const Color(0xFFE5E7EB)),
+                borderRadius: BorderRadius.circular(6),
+                color: Colors.white,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(current),
+                  const SizedBox(width: 6),
+                  const Icon(Icons.arrow_drop_down, size: 18),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
