@@ -40,8 +40,14 @@ class SalePage extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),
-                  // Non-functional filter dropdown
-                  const _FilterControl(),
+                  // Non-functional filter/sort + count between dividers
+                  const SizedBox(height: 8),
+                  const Divider(color: Color(0xFFE5E7EB)),
+                  const SizedBox(height: 8),
+                  _FilterControl(count: saleProducts.length),
+                  const SizedBox(height: 8),
+                  const Divider(color: Color(0xFFE5E7EB)),
+                  const SizedBox(height: 12),
                   const SizedBox(height: 12),
                   GridView.builder(
                     itemCount: saleProducts.length,
@@ -141,7 +147,8 @@ class _SaleCard extends StatelessWidget {
 }
 
 class _FilterControl extends StatefulWidget {
-  const _FilterControl();
+  final int count;
+  const _FilterControl({required this.count});
 
   @override
   State<_FilterControl> createState() => _FilterControlState();
@@ -215,6 +222,11 @@ class _FilterControlState extends State<_FilterControl> {
                 const Icon(Icons.arrow_drop_down, size: 18),
               ],
             ),
+          ),
+          const SizedBox(width: 16),
+          Text(
+            '${widget.count} Products',
+            style: const TextStyle(color: Colors.black54),
           ),
         ],
       ),
