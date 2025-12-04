@@ -14,7 +14,7 @@ class Navbar extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
           color: const Color(0xFF4d2963),
           child: const Text(
-            'WELCOME TO THE UNION SHOP',
+            'BIG SALE! OUR ESSENTIAL RANGE HAS DROPPED IN PRICE! OVER 20% OFF! COME GRAB YOURS WHILE STOCK LASTS!',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white, fontSize: 14),
           ),
@@ -69,6 +69,8 @@ class Navbar extends StatelessWidget {
             ],
           ),
         ),
+        // Separator line under the navbar
+        Divider(height: 1, thickness: 1, color: Colors.grey[300]),
       ],
     );
   }
