@@ -156,6 +156,18 @@ class _FilterControlState extends State<_FilterControl> {
     'PSUT',
   ];
 
+  String sortCurrent = 'Featured';
+  static const sortOptions = [
+    'Featured',
+    'Best Selling',
+    'Alphabetically, A-Z',
+    'Alphabetically, Z-A',
+    'Price, low to high',
+    'Price, high to low',
+    'Date, old to new',
+    'Date, new to old',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -175,21 +187,33 @@ class _FilterControlState extends State<_FilterControl> {
             itemBuilder: (context) => options
                 .map((o) => PopupMenuItem<String>(value: o, child: Text(o)))
                 .toList(),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xFFE5E7EB)),
-                borderRadius: BorderRadius.circular(6),
-                color: Colors.white,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(current),
-                  const SizedBox(width: 6),
-                  const Icon(Icons.arrow_drop_down, size: 18),
-                ],
-              ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(current, style: const TextStyle(fontWeight: FontWeight.w500)),
+                const SizedBox(width: 4),
+                const Icon(Icons.arrow_drop_down, size: 18),
+              ],
+            ),
+          ),
+          const SizedBox(width: 16),
+          const Text(
+            'Sort By:',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          PopupMenuButton<String>(
+            initialValue: sortCurrent,
+            onSelected: (val) => setState(() => sortCurrent = val),
+            itemBuilder: (context) => sortOptions
+                .map((o) => PopupMenuItem<String>(value: o, child: Text(o)))
+                .toList(),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(sortCurrent, style: const TextStyle(fontWeight: FontWeight.w500)),
+                const SizedBox(width: 4),
+                const Icon(Icons.arrow_drop_down, size: 18),
+              ],
             ),
           ),
         ],
