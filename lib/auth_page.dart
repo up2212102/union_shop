@@ -10,7 +10,7 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  bool isLogin = true;
+  final _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,45 +26,80 @@ class _AuthPageState extends State<AuthPage> {
               child: Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 480),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        isLogin ? 'Log in' : 'Sign up',
-                        style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 16),
-                      if (!isLogin)
-                        const TextField(
-                          decoration: InputDecoration(labelText: 'Full name', border: OutlineInputBorder()),
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: const Color(0xFFE5E7EB)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.06),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
                         ),
-                      if (!isLogin) const SizedBox(height: 12),
-                      const TextField(
-                        decoration: InputDecoration(labelText: 'Email', border: OutlineInputBorder()),
-                      ),
-                      const SizedBox(height: 12),
-                      const TextField(
-                        decoration: InputDecoration(labelText: 'Password', border: OutlineInputBorder()),
-                        obscureText: true,
-                      ),
-                      const SizedBox(height: 16),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF4d2963),
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 14),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(
+                          height: 44,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF4d2963),
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6)),
+                            ),
+                            onPressed: () {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content:
+                                    Text('Sign in with shop (placeholder)'),
+                              ));
+                            },
+                            child: const Text('Sign in with shop'),
                           ),
-                          onPressed: () {},
-                          child: Text(isLogin ? 'LOG IN' : 'CREATE ACCOUNT'),
                         ),
-                      ),
-                      TextButton(
-                        onPressed: () => setState(() => isLogin = !isLogin),
-                        child: Text(isLogin ? "Don't have an account? Sign up" : 'Have an account? Log in'),
-                      ),
-                    ],
+                        const SizedBox(height: 16),
+                        TextField(
+                          controller: _emailController,
+                          decoration: const InputDecoration(
+                            labelText: 'Email',
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        const SizedBox(height: 16),
+                        SizedBox(
+                          height: 44,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromARGB(221, 245, 245, 245),
+                              foregroundColor: const Color.fromARGB(255, 58, 58, 58),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6)),
+                            ),
+                            onPressed: () {
+                              final email = _emailController.text.trim();
+                              if (email.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Please enter your email')),
+                                );
+                                return;
+                              }
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text('Continuing with: $email')),
+                              );
+                            },
+                            child: const Text('Continue'),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
