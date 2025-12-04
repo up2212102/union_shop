@@ -43,6 +43,17 @@ class _AuthPageState extends State<AuthPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        const Text(
+                          'Sign in',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 6),
+                        const Text(
+                          "Choose how you'd like to sign in",
+                          style: TextStyle(color: Colors.black54),
+                        ),
+                        const SizedBox(height: 16),
                         SizedBox(
                           height: 44,
                           child: ElevatedButton(
@@ -62,7 +73,22 @@ class _AuthPageState extends State<AuthPage> {
                             child: const Text('Sign in with shop'),
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: Divider(
+                                    color: Colors.grey[300], thickness: 1)),
+                            const SizedBox(width: 8),
+                            const Text('OR',
+                                style: TextStyle(color: Colors.black54)),
+                            const SizedBox(width: 8),
+                            Expanded(
+                                child: Divider(
+                                    color: Colors.grey[300], thickness: 1)),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
                         TextField(
                           controller: _emailController,
                           decoration: const InputDecoration(
@@ -76,8 +102,10 @@ class _AuthPageState extends State<AuthPage> {
                           height: 44,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromARGB(221, 245, 245, 245),
-                              foregroundColor: const Color.fromARGB(255, 58, 58, 58),
+                              backgroundColor:
+                                  const Color.fromARGB(221, 245, 245, 245),
+                              foregroundColor:
+                                  const Color.fromARGB(255, 58, 58, 58),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(6)),
                             ),
