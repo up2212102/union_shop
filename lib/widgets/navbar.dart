@@ -36,16 +36,27 @@ class Navbar extends StatelessWidget {
                     width: 28,
                     height: 28,
                     color: Colors.grey[300],
-                    child: const Icon(Icons.store, size: 18, color: Colors.grey),
+                    child:
+                        const Icon(Icons.store, size: 18, color: Colors.grey),
                   ),
                 ),
               ),
-              const Spacer(),
+              // Centered nav links
+              Expanded(
+                child: isWide
+                    ? const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _NavLink(label: 'Home', route: '/'),
+                          _NavLink(label: 'About', route: '/about'),
+                          _NavLink(label: 'Shop', route: '/collections'),
+                          _NavLink(label: 'Sale', route: '/sale'),
+                        ],
+                      )
+                    : const SizedBox.shrink(),
+              ),
+              // Right-side control (Account or menu)
               if (isWide) ...[
-                const _NavLink(label: 'Home', route: '/'),
-                const _NavLink(label: 'About', route: '/about'),
-                const _NavLink(label: 'Collections', route: '/collections'),
-                const _NavLink(label: 'Sale', route: '/sale'),
                 const _NavLink(label: 'Account', route: '/auth'),
               ] else ...[
                 Builder(
@@ -63,26 +74,54 @@ class Navbar extends StatelessWidget {
   }
 }
 
-class _NavLink extends StatelessWidget {
+class _NavLink extends StatefulWidget {
   final String label;
   final String route;
   const _NavLink({required this.label, required this.route});
 
   @override
+  State<_NavLink> createState() => _NavLinkState();
+}
+
+class _NavLinkState extends State<_NavLink> {
+  bool _hovering = false;
+
+  @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        if (route == '/') {
-          Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false);
-        } else {
-          Navigator.pushNamed(context, route);
-        }
-      },
-      child: Text(
-        label.toUpperCase(),
-        style: const TextStyle(color: Colors.black87, letterSpacing: 0.5),
+    final text = widget.label.toUpperCase();
+    final currentRoute = ModalRoute.of(context)?.settings.name;
+    final isActive = _isRouteActive(currentRoute, widget.route);
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovering = true),
+      onExit: (_) => setState(() => _hovering = false),
+      child: TextButton(
+        onPressed: () {
+          if (widget.route == '/') {
+            Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false);
+          } else {
+            Navigator.pushNamed(context, widget.route);
+          }
+        },
+        child: Text(
+          text,
+          style: TextStyle(
+            color: Colors.black87,
+            letterSpacing: 0.5,
+            decoration: (_hovering || isActive)
+                ? TextDecoration.underline
+                : TextDecoration.none,
+          ),
+        ),
       ),
     );
+  }
+
+  bool _isRouteActive(String? current, String target) {
+    if (current == null) return target == '/';
+    if (target == '/') {
+      return current == '/' || current.isEmpty;
+    }
+    return current == target;
   }
 }
 
@@ -105,7 +144,7 @@ class AppDrawer extends StatelessWidget {
               onTap: () => Navigator.pushNamed(context, '/about'),
             ),
             ListTile(
-              title: const Text('Collections'),
+              title: const Text('Shop'),
               onTap: () => Navigator.pushNamed(context, '/collections'),
             ),
             ListTile(

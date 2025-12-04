@@ -8,10 +8,18 @@ class CollectionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const collections = [
-      _CollectionCardData(title: 'Hoodies', imageUrl: 'https://picsum.photos/seed/hoodies/600/400'),
-      _CollectionCardData(title: 'T-Shirts', imageUrl: 'https://picsum.photos/seed/tshirts/600/400'),
-      _CollectionCardData(title: 'Accessories', imageUrl: 'https://picsum.photos/seed/accessories/600/400'),
-      _CollectionCardData(title: 'Stationery', imageUrl: 'https://picsum.photos/seed/stationery/600/400'),
+      _CollectionCardData(
+          title: 'Hoodies',
+          imageUrl: 'https://picsum.photos/seed/hoodies/600/400'),
+      _CollectionCardData(
+          title: 'T-Shirts',
+          imageUrl: 'https://picsum.photos/seed/tshirts/600/400'),
+      _CollectionCardData(
+          title: 'Accessories',
+          imageUrl: 'https://picsum.photos/seed/accessories/600/400'),
+      _CollectionCardData(
+          title: 'Stationery',
+          imageUrl: 'https://picsum.photos/seed/stationery/600/400'),
     ];
 
     return Scaffold(
@@ -34,7 +42,8 @@ class CollectionsPage extends StatelessWidget {
                   GridView.builder(
                     itemCount: collections.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: MediaQuery.of(context).size.width > 800 ? 3 : 2,
+                      crossAxisCount:
+                          MediaQuery.of(context).size.width > 800 ? 3 : 2,
                       crossAxisSpacing: 16,
                       mainAxisSpacing: 16,
                       childAspectRatio: 1.2,
@@ -81,11 +90,14 @@ class _CollectionCard extends StatelessWidget {
               fit: BoxFit.cover,
               errorBuilder: (c, e, s) => Container(color: Colors.grey[300]),
             ),
-            Container(color: Colors.black.withOpacity(0.35)),
+            Container(color: Colors.black.withValues(alpha: 0.35)),
             Center(
               child: Text(
                 data.title,
-                style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ],
