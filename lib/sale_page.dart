@@ -29,12 +29,16 @@ class SalePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Sale', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                  const Text('SALE',
+                      style:
+                          TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.all(12),
                     color: const Color(0xFFFFE9EC),
-                    child: const Text('Save up to 40% this week!'),
+                    child: const Text(
+                      "Don’t miss out! Get yours before they’re all gone!\n\nAll prices shown are inclusive of the discount 🛒",
+                    ),
                   ),
                   const SizedBox(height: 16),
                   GridView.builder(
@@ -47,7 +51,8 @@ class SalePage extends StatelessWidget {
                       mainAxisSpacing: 16,
                       childAspectRatio: 0.72,
                     ),
-                    itemBuilder: (context, index) => _SaleCard(data: saleProducts[index]),
+                    itemBuilder: (context, index) =>
+                        _SaleCard(data: saleProducts[index]),
                   ),
                 ],
               ),
@@ -61,7 +66,8 @@ class SalePage extends StatelessWidget {
 }
 
 class MediaInfo {
-  static bool isWide(BuildContext context) => MediaQuery.of(context).size.width > 900;
+  static bool isWide(BuildContext context) =>
+      MediaQuery.of(context).size.width > 900;
 }
 
 class _SaleProduct {
@@ -69,7 +75,11 @@ class _SaleProduct {
   final double original;
   final double discounted;
   final String imageUrl;
-  const _SaleProduct({required this.title, required this.original, required this.discounted, required this.imageUrl});
+  const _SaleProduct(
+      {required this.title,
+      required this.original,
+      required this.discounted,
+      required this.imageUrl});
 }
 
 class _SaleCard extends StatelessWidget {
@@ -99,11 +109,14 @@ class _SaleCard extends StatelessWidget {
               Row(
                 children: [
                   Text('£${data.discounted.toStringAsFixed(2)}',
-                      style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                      style: const TextStyle(
+                          color: Colors.red, fontWeight: FontWeight.bold)),
                   const SizedBox(width: 8),
                   Text(
                     '£${data.original.toStringAsFixed(2)}',
-                    style: const TextStyle(color: Colors.grey, decoration: TextDecoration.lineThrough),
+                    style: const TextStyle(
+                        color: Colors.grey,
+                        decoration: TextDecoration.lineThrough),
                   ),
                 ],
               ),
@@ -115,7 +128,8 @@ class _SaleCard extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               color: Colors.red,
-              child: const Text('SALE', style: TextStyle(color: Colors.white, fontSize: 12)),
+              child: const Text('SALE',
+                  style: TextStyle(color: Colors.white, fontSize: 12)),
             ),
           )
         ],
