@@ -35,13 +35,9 @@ class SalePage extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    color: const Color(0xFFFFE9EC),
-                    child: const Text(
-                      "Don’t miss out! Get yours before they’re all gone!\n\nAll prices shown are inclusive of the discount 🛒",
-                      textAlign: TextAlign.center,
-                    ),
+                  const Text(
+                    "Don’t miss out! Get yours before they’re all gone!\n\nAll prices shown are inclusive of the discount 🛒",
+                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),
                   GridView.builder(
