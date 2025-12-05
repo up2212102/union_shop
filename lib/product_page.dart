@@ -182,7 +182,7 @@ class _ProductPageState extends State<ProductPage> {
                                     ),
                                     const SizedBox(height: 8),
                                     DropdownButtonFormField<String>(
-                                      value: selectedColor,
+                                      initialValue: selectedColor,
                                       items: const ['Black', 'Purple', 'Grey', 'Bottle Green']
                                           .map((c) => DropdownMenuItem<String>(value: c, child: Text(c)))
                                           .toList(),
@@ -211,7 +211,7 @@ class _ProductPageState extends State<ProductPage> {
                                     ),
                                     const SizedBox(height: 8),
                                     DropdownButtonFormField<String>(
-                                      value: selectedSize,
+                                      initialValue: selectedSize,
                                       items: const ['S', 'M', 'L', 'XL', 'XXL']
                                           .map((s) => DropdownMenuItem<String>(value: s, child: Text(s)))
                                           .toList(),
@@ -343,6 +343,78 @@ class _ProductPageState extends State<ProductPage> {
                                     decoration: TextDecoration.underline,
                                     color: Colors.black,
                                   ),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: OutlinedButton(
+                                      onPressed: () {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(content: Text('Share clicked')),
+                                        );
+                                      },
+                                      style: OutlinedButton.styleFrom(
+                                        side: const BorderSide(color: Color(0xFFE5E7EB)),
+                                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                                        padding: const EdgeInsets.symmetric(vertical: 12),
+                                      ),
+                                      child: const Text('Share'),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: OutlinedButton(
+                                      onPressed: () {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(content: Text('Tweet clicked')),
+                                        );
+                                      },
+                                      style: OutlinedButton.styleFrom(
+                                        side: const BorderSide(color: Color(0xFFE5E7EB)),
+                                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                                        padding: const EdgeInsets.symmetric(vertical: 12),
+                                      ),
+                                      child: const Text('Tweet'),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: OutlinedButton(
+                                      onPressed: () {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(content: Text('Pin it clicked')),
+                                        );
+                                      },
+                                      style: OutlinedButton.styleFrom(
+                                        side: const BorderSide(color: Color(0xFFE5E7EB)),
+                                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                                        padding: const EdgeInsets.symmetric(vertical: 12),
+                                      ),
+                                      child: const Text('Pin it'),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              SizedBox(
+                                width: double.infinity,
+                                child: OutlinedButton(
+                                  onPressed: () {
+                                    // Go back to the previous page (Collection)
+                                    if (Navigator.canPop(context)) {
+                                      Navigator.pop(context);
+                                    } else {
+                                      Navigator.pushNamed(context, '/collection');
+                                    }
+                                  },
+                                  style: OutlinedButton.styleFrom(
+                                    side: const BorderSide(color: Color(0xFFE5E7EB)),
+                                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                                    padding: const EdgeInsets.symmetric(vertical: 16),
+                                  ),
+                                  child: const Text('Back to Collection'),
                                 ),
                               ),
                             ],
