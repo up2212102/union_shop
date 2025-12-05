@@ -214,6 +214,49 @@ class HomeScreen extends StatelessWidget {
                                 child: const Text('View All'),
                               ),
                             ),
+                            const SizedBox(height: 48),
+                            const Center(
+                              child: Text(
+                                'OUR RANGE',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                  letterSpacing: 1,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                            GridView.count(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              crossAxisCount: MediaQuery.of(context).size.width > 900
+                                  ? 4
+                                  : (MediaQuery.of(context).size.width > 600 ? 2 : 1),
+                              crossAxisSpacing: 16,
+                              mainAxisSpacing: 16,
+                              children: const [
+                                _ConceptImage(
+                                  imageUrl:
+                                      'https://picsum.photos/seed/merch1/1200/800',
+                                  label: 'Clothing',
+                                ),
+                                _ConceptImage(
+                                  imageUrl:
+                                      'https://picsum.photos/seed/merch2/1200/800',
+                                  label: 'Merchandise',
+                                ),
+                                _ConceptImage(
+                                  imageUrl:
+                                      'https://picsum.photos/seed/merch3/1200/800',
+                                  label: 'Graduation',
+                                ),
+                                _ConceptImage(
+                                  imageUrl:
+                                      'https://picsum.photos/seed/merch4/1200/800',
+                                  label: 'SALE',
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -284,6 +327,57 @@ class ProductCard extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ConceptImage extends StatelessWidget {
+  final String imageUrl;
+  final String label;
+  const _ConceptImage({required this.imageUrl, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Concept image tapped')),
+        );
+      },
+      child: AspectRatio(
+        aspectRatio: 1.6,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.network(
+              imageUrl,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: Colors.grey[300],
+                  child: const Center(
+                    child: Icon(Icons.image_not_supported, color: Colors.grey),
+                  ),
+                );
+              },
+            ),
+            Container(
+              color: Colors.black.withValues(alpha: 0.25),
+            ),
+            Center(
+              child: Text(
+                label,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.5,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
