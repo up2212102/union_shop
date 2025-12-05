@@ -146,16 +146,31 @@ class _SaleCard extends StatelessWidget {
               const SizedBox(height: 4),
               Row(
                 children: [
-                  Text('£${data.discounted.toStringAsFixed(2)}',
+                  if (data.title == 'A5 Notepad') ...[
+                    const Text(
+                      'Sold Out',
+                      style:
+                          TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      '£${data.original.toStringAsFixed(2)}',
                       style: const TextStyle(
-                          color: Colors.red, fontWeight: FontWeight.bold)),
-                  const SizedBox(width: 8),
-                  Text(
-                    '£${data.original.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                        color: Colors.grey,
-                        decoration: TextDecoration.lineThrough),
-                  ),
+                          color: Colors.grey,
+                          decoration: TextDecoration.lineThrough),
+                    ),
+                  ] else ...[
+                    Text('£${data.discounted.toStringAsFixed(2)}',
+                        style: const TextStyle(
+                            color: Colors.red, fontWeight: FontWeight.bold)),
+                    const SizedBox(width: 8),
+                    Text(
+                      '£${data.original.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                          color: Colors.grey,
+                          decoration: TextDecoration.lineThrough),
+                    ),
+                  ],
                 ],
               ),
             ],
