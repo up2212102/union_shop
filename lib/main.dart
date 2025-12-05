@@ -6,6 +6,7 @@ import 'package:union_shop/collection_page.dart';
 import 'package:union_shop/sale_page.dart';
 import 'package:union_shop/auth_page.dart';
 import 'package:union_shop/print_page.dart';
+import 'package:union_shop/cart_page.dart';
 import 'package:union_shop/widgets/navbar.dart';
 import 'package:union_shop/widgets/footer.dart';
 
@@ -37,6 +38,7 @@ class UnionShopApp extends StatelessWidget {
         '/sale': (context) => const SalePage(),
         '/auth': (context) => const AuthPage(),
         '/print': (context) => const PrintPage(),
+        '/cart': (context) => const CartPage(),
       },
     );
   }

@@ -123,9 +123,7 @@ class _NavbarState extends State<Navbar> {
                       tooltip: 'Cart',
                       icon: const Icon(Icons.shopping_cart_outlined, color: Colors.grey),
                       onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Cart is empty')),
-                        );
+                        Navigator.pushNamed(context, '/cart');
                       },
                     ),
                     IconButton(
