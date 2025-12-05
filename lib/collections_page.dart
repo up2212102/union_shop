@@ -8,18 +8,27 @@ class CollectionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const collections = [
-      _CollectionCardData(
-          title: 'Hoodies',
-          imageUrl: 'https://picsum.photos/seed/hoodies/600/400'),
-      _CollectionCardData(
-          title: 'T-Shirts',
-          imageUrl: 'https://picsum.photos/seed/tshirts/600/400'),
-      _CollectionCardData(
-          title: 'Accessories',
-          imageUrl: 'https://picsum.photos/seed/accessories/600/400'),
-      _CollectionCardData(
-          title: 'Stationery',
-          imageUrl: 'https://picsum.photos/seed/stationery/600/400'),
+      _CollectionCardData(title: 'Autumn Favorites', imageUrl: 'https://picsum.photos/seed/freshers/600/400'),
+      _CollectionCardData(title: 'Societies', imageUrl: 'https://picsum.photos/seed/societies/600/400'),
+      _CollectionCardData(title: 'Sportswear', imageUrl: 'https://picsum.photos/seed/sportswear/600/400'),
+      _CollectionCardData(title: 'Graduation', imageUrl: 'https://picsum.photos/seed/graduation/600/400'),
+      _CollectionCardData(title: 'Sale', imageUrl: 'https://picsum.photos/seed/sale/600/400'),
+      _CollectionCardData(title: 'Essentials', imageUrl: 'https://picsum.photos/seed/essentials/600/400'),
+      _CollectionCardData(title: 'Print Shack', imageUrl: 'https://picsum.photos/seed/printshack/600/400'),
+      _CollectionCardData(title: "Domino's Deals", imageUrl: 'https://picsum.photos/seed/dominos/600/400'),
+      _CollectionCardData(title: 'Accommodation', imageUrl: 'https://picsum.photos/seed/accommodation/600/400'),
+      _CollectionCardData(title: 'Study', imageUrl: 'https://picsum.photos/seed/study/600/400'),
+      _CollectionCardData(title: 'Tech', imageUrl: 'https://picsum.photos/seed/tech/600/400'),
+      _CollectionCardData(title: 'Merch', imageUrl: 'https://picsum.photos/seed/merch/600/400'),
+      _CollectionCardData(title: 'Eco', imageUrl: 'https://picsum.photos/seed/eco/600/400'),
+      _CollectionCardData(title: 'Winter', imageUrl: 'https://picsum.photos/seed/winter/600/400'),
+      _CollectionCardData(title: 'Summer', imageUrl: 'https://picsum.photos/seed/summer/600/400'),
+      _CollectionCardData(title: 'New In', imageUrl: 'https://picsum.photos/seed/newin/600/400'),
+      _CollectionCardData(title: 'Best Sellers', imageUrl: 'https://picsum.photos/seed/bestsellers/600/400'),
+      _CollectionCardData(title: 'Clearance', imageUrl: 'https://picsum.photos/seed/clearance/600/400'),
+      _CollectionCardData(title: 'Limited Edition', imageUrl: 'https://picsum.photos/seed/limited/600/400'),
+      _CollectionCardData(title: 'Campus Life', imageUrl: 'https://picsum.photos/seed/campus/600/400'),
+      _CollectionCardData(title: 'Portsmouth City', imageUrl: 'https://picsum.photos/seed/portsmouth/600/400'),
     ];
 
     return Scaffold(
@@ -34,26 +43,40 @@ class CollectionsPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Collections',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  const Center(
+                    child: Text(
+                      'Collections',
+                      textAlign: TextAlign.center,
+                      style:
+                          TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                    ),
                   ),
                   const SizedBox(height: 16),
-                  GridView.builder(
-                    itemCount: collections.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount:
-                          MediaQuery.of(context).size.width > 800 ? 3 : 2,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                      childAspectRatio: 1.2,
+                  Center(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width > 1200
+                            ? 1200
+                            : (MediaQuery.of(context).size.width > 800
+                                ? 900
+                                : 600),
+                      ),
+                      child: GridView.builder(
+                        itemCount: collections.length,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: 1.2,
+                        ),
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          final c = collections[index];
+                          return _CollectionCard(data: c);
+                        },
+                      ),
                     ),
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      final c = collections[index];
-                      return _CollectionCard(data: c);
-                    },
                   ),
                 ],
               ),

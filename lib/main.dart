@@ -519,7 +519,7 @@ class _ConceptImage extends StatelessWidget {
 
 class _SimpleCarousel extends StatefulWidget {
   final List<String> imageUrls;
-  const _SimpleCarousel({super.key, required this.imageUrls});
+  const _SimpleCarousel({required this.imageUrls});
 
   @override
   State<_SimpleCarousel> createState() => _SimpleCarouselState();
@@ -600,7 +600,7 @@ class _SimpleCarouselState extends State<_SimpleCarousel> {
 
 class _HeroCarousel extends StatefulWidget {
   final List<String> imageUrls;
-  const _HeroCarousel({super.key, required this.imageUrls});
+  const _HeroCarousel({required this.imageUrls});
 
   @override
   State<_HeroCarousel> createState() => _HeroCarouselState();
