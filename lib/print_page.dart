@@ -1,0 +1,310 @@
+import 'package:flutter/material.dart';
+import 'package:union_shop/widgets/navbar.dart';
+import 'package:union_shop/widgets/footer.dart';
+
+class PrintPage extends StatefulWidget {
+  const PrintPage({super.key});
+
+  @override
+  State<PrintPage> createState() => _PrintPageState();
+}
+
+class _PrintPageState extends State<PrintPage> {
+  int quantity = 1;
+  final TextEditingController _qtyController = TextEditingController(text: '1');
+  final List<String> _images = const [
+    'https://picsum.photos/seed/print1/1024/1024',
+    'https://picsum.photos/seed/print2/1024/1024',
+    'https://picsum.photos/seed/print3/1024/1024',
+  ];
+  int _imageIndex = 0;
+
+  @override
+  void dispose() {
+    _qtyController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: const AppDrawer(),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const Navbar(),
+            Container(
+              color: Colors.white,
+              padding: const EdgeInsets.all(24),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width > 1200 ? 1200 : 1000,
+                  ),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final isWide = constraints.maxWidth > 700;
+                      final image = Container(
+                        height: isWide ? 380 : 280,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.grey[200],
+                        ),
+                        clipBehavior: Clip.antiAlias,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Expanded(
+                              child: Image.network(
+                                _images[_imageIndex],
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    color: Colors.grey[300],
+                                    child: const Center(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.image_not_supported, size: 64, color: Colors.grey),
+                                          SizedBox(height: 8),
+                                          Text('Image unavailable', style: TextStyle(color: Colors.grey)),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            SizedBox(
+                              height: 70,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  for (int i = 0; i < _images.length; i++)
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 6),
+                                      child: InkWell(
+                                        onTap: () => setState(() => _imageIndex = i),
+                                        child: Container(
+                                          width: 70,
+                                          height: 70,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: i == _imageIndex ? const Color(0xFF4d2963) : const Color(0xFFE5E7EB),
+                                              width: i == _imageIndex ? 2 : 1,
+                                            ),
+                                            borderRadius: BorderRadius.circular(6),
+                                            color: Colors.white,
+                                          ),
+                                          clipBehavior: Clip.antiAlias,
+                                          child: Image.network(
+                                            _images[i],
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (context, error, stackTrace) => Container(color: Colors.grey[300]),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+
+                      final details = Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'The Print Shack',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          const Text(
+                            'Personalisation Service',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF4d2963),
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          const Text(
+                            'Add a personal touch to your merch. Choose your item, then add custom text in-store. Pricing varies by item and number of characters.',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey,
+                              height: 1.5,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Quantity',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        _QtyButton(
+                                          icon: Icons.remove,
+                                          onTap: () {
+                                            setState(() {
+                                              quantity = (quantity - 1).clamp(1, 999);
+                                              _qtyController.text = quantity.toString();
+                                            });
+                                          },
+                                        ),
+                                        const SizedBox(width: 8),
+                                        SizedBox(
+                                          width: 64,
+                                          child: TextField(
+                                            controller: _qtyController,
+                                            keyboardType: TextInputType.number,
+                                            textAlign: TextAlign.center,
+                                            decoration: const InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              isDense: true,
+                                              contentPadding: EdgeInsets.symmetric(vertical: 8),
+                                            ),
+                                            onSubmitted: (val) {
+                                              final n = int.tryParse(val) ?? quantity;
+                                              setState(() {
+                                                quantity = n.clamp(1, 999);
+                                                _qtyController.text = quantity.toString();
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        _QtyButton(
+                                          icon: Icons.add,
+                                          onTap: () {
+                                            setState(() {
+                                              quantity = (quantity + 1).clamp(1, 999);
+                                              _qtyController.text = quantity.toString();
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Find out more')),
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFF4d2963),
+                                    foregroundColor: Colors.white,
+                                    padding: const EdgeInsets.symmetric(vertical: 16),
+                                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                                  ),
+                                  child: const Text('Find out more'),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              SizedBox(
+                                width: double.infinity,
+                                child: OutlinedButton(
+                                  onPressed: () {
+                                    if (Navigator.canPop(context)) {
+                                      Navigator.pop(context);
+                                    } else {
+                                      Navigator.pushNamed(context, '/');
+                                    }
+                                  },
+                                  style: OutlinedButton.styleFrom(
+                                    side: const BorderSide(color: Color(0xFFE5E7EB)),
+                                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                                    padding: const EdgeInsets.symmetric(vertical: 16),
+                                  ),
+                                  child: const Text('Back to Home'),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+
+                      if (isWide) {
+                        return Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(flex: 1, child: image),
+                            const SizedBox(width: 24),
+                            Expanded(flex: 1, child: details),
+                          ],
+                        );
+                      } else {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            image,
+                            const SizedBox(height: 24),
+                            details,
+                          ],
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ),
+            ),
+            const Footer(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _QtyButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+  const _QtyButton({required this.icon, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: const Color(0xFFE5E7EB)),
+            color: Colors.white,
+          ),
+          padding: const EdgeInsets.all(8),
+          child: Icon(icon, size: 18),
+        ),
+      ),
+    );
+  }
+}

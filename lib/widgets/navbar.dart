@@ -59,6 +59,7 @@ class _NavbarState extends State<Navbar> {
                           _NavLink(label: 'About', route: '/about'),
                           _NavLink(label: 'Shop', route: '/collections'),
                           _NavLink(label: 'Sale', route: '/sale'),
+                          _NavLink(label: 'The Print Shack', route: '/print'),
                         ],
                       )
                     : const SizedBox.shrink(),
@@ -89,8 +90,8 @@ class _NavbarState extends State<Navbar> {
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: const Color(0xFF4d2963),
+                                  borderSide: const BorderSide(
+                                    color: Color(0xFF4d2963),
                                   ),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
@@ -176,10 +177,16 @@ class _NavLinkState extends State<_NavLink> {
       onExit: (_) => setState(() => _hovering = false),
       child: TextButton(
         onPressed: () {
-          if (widget.route == '/') {
-            Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false);
-          } else {
-            Navigator.pushNamed(context, widget.route);
+          try {
+            if (widget.route == '/') {
+              Navigator.pushNamedAndRemoveUntil(context, '/', (r) => false);
+            } else {
+              Navigator.pushNamed(context, widget.route);
+            }
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Route ${widget.route} not available')),
+            );
           }
         },
         child: Text(
@@ -230,6 +237,18 @@ class AppDrawer extends StatelessWidget {
             ListTile(
               title: const Text('Sale'),
               onTap: () => Navigator.pushNamed(context, '/sale'),
+            ),
+            ListTile(
+              title: const Text('The Print Shack'),
+              onTap: () {
+                try {
+                  Navigator.pushNamed(context, '/print');
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Print Shack route not available')),
+                  );
+                }
+              },
             ),
             ListTile(
               title: const Text('Account'),
