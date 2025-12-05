@@ -145,6 +145,48 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     const Text(
+                      'ESSENTIAL RANGE - OVER 20% OFF!',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Center(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width > 900 ? 900 : 600,
+                        ),
+                        child: GridView.count(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisCount: MediaQuery.of(context).size.width > 600 ? 2 : 1,
+                          crossAxisSpacing: 24,
+                          mainAxisSpacing: 36,
+                          children: const [
+                            ProductCard(
+                              title: 'Limited Edition Essential Zip Hoodies',
+                              price: '£14.99',
+                              originalPrice: '£20.00',
+                              salePrice: '£14.99',
+                              imageUrl:
+                                  'https://picsum.photos/seed/essential1/1200/800',
+                            ),
+                            ProductCard(
+                              title: 'Essential T-Shirt',
+                              price: '£6.99',
+                              originalPrice: '£10.00',
+                              salePrice: '£6.99',
+                              imageUrl:
+                                  'https://picsum.photos/seed/essential2/1200/800',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    const Text(
                       'SIGNATURE RANGE',
                       style: TextStyle(
                         fontSize: 20,
@@ -405,12 +447,16 @@ class ProductCard extends StatelessWidget {
   final String title;
   final String price;
   final String imageUrl;
+  final String? originalPrice;
+  final String? salePrice;
 
   const ProductCard({
     super.key,
     required this.title,
     required this.price,
     required this.imageUrl,
+    this.originalPrice,
+    this.salePrice,
   });
 
   @override
@@ -447,10 +493,32 @@ class ProductCard extends StatelessWidget {
                 maxLines: 2,
               ),
               const SizedBox(height: 4),
-              Text(
-                price,
-                style: const TextStyle(fontSize: 13, color: Colors.grey),
-              ),
+              if (salePrice != null && originalPrice != null)
+                Row(
+                  children: [
+                    Text(
+                      originalPrice!,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey,
+                        decoration: TextDecoration.lineThrough,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      salePrice!,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                )
+              else
+                Text(
+                  price,
+                  style: const TextStyle(fontSize: 13, color: Colors.grey),
+                ),
             ],
           ),
         ],
