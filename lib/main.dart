@@ -145,6 +145,44 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     const Text(
+                      'SIGNATURE RANGE',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Center(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width > 900 ? 900 : 600,
+                        ),
+                        child: GridView.count(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisCount: MediaQuery.of(context).size.width > 600 ? 2 : 1,
+                          crossAxisSpacing: 24,
+                          mainAxisSpacing: 36,
+                          children: const [
+                            ProductCard(
+                              title: 'Signature Hoodie',
+                              price: '£32.99',
+                              imageUrl:
+                                  'https://picsum.photos/seed/signature1/1200/800',
+                            ),
+                            ProductCard(
+                              title: 'Signature T-Shirt',
+                              price: '£14.99',
+                              imageUrl:
+                                  'https://picsum.photos/seed/signature2/1200/800',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 48),
+                    const Text(
                       'PORTSMOUTH CITY COLLECTION',
                       style: TextStyle(
                         fontSize: 20,
