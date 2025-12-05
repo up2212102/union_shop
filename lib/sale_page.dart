@@ -7,10 +7,19 @@ class SalePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final titles = [
+      'A5 Notepad',
+      'Classic Sweatshirts - Neutral',
+      'Recycled Notebook',
+      'Iphone 5/6 Charge & Sync Cable',
+      'Type C Charge % Sync Cable',
+      'USB to USB Charge & Sync Cables',
+    ];
+
     final saleProducts = List.generate(
       6,
       (i) => _SaleProduct(
-        title: 'Sale Item ${i + 1}',
+        title: titles[i],
         original: 25 + i * 5,
         discounted: 15 + i * 4,
         imageUrl: 'https://picsum.photos/seed/sale$i/600/400',
@@ -49,18 +58,39 @@ class SalePage extends StatelessWidget {
                   const Divider(color: Color(0xFFE5E7EB)),
                   const SizedBox(height: 12),
                   const SizedBox(height: 12),
-                  GridView.builder(
-                    itemCount: saleProducts.length,
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: MediaInfo.isWide(context) ? 3 : 2,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                      childAspectRatio: 0.72,
+                  Center(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: MediaInfo.isWide(context) ? 900 : 600,
+                      ),
+                      child: GridView.builder(
+                        itemCount: saleProducts.length,
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: MediaInfo.isWide(context) ? 3 : 2,
+                          crossAxisSpacing: 14,
+                          mainAxisSpacing: 14,
+                          childAspectRatio: 0.75,
+                        ),
+                        itemBuilder: (context, index) =>
+                            _SaleCard(data: saleProducts[index]),
+                      ),
                     ),
-                    itemBuilder: (context, index) =>
-                        _SaleCard(data: saleProducts[index]),
+                  ),
+                  const SizedBox(height: 16),
+                  // Non-functional pagination arrows
+                  const Center(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _PageArrowButton(icon: Icons.arrow_left),
+                        SizedBox(width: 12),
+                        Text('Page 1 of 1', style: TextStyle(color: Colors.black54)),
+                        SizedBox(width: 12),
+                        _PageArrowButton(icon: Icons.arrow_right),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -141,6 +171,44 @@ class _SaleCard extends StatelessWidget {
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class _PageArrowButton extends StatelessWidget {
+  final IconData icon;
+  const _PageArrowButton({required this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(6),
+        onTap: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Pagination is not implemented yet.')),
+          );
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: const Color(0xFFE5E7EB)),
+            borderRadius: BorderRadius.circular(6),
+            color: Colors.white,
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x11000000),
+                blurRadius: 6,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            child: Icon(icon, size: 20, color: Colors.black87),
+          ),
+        ),
       ),
     );
   }
