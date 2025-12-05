@@ -37,7 +37,7 @@ class _CollectionPageState extends State<CollectionPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text(
-                    'Hoodies',
+                    'Collection',
                     style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
