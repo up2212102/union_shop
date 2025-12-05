@@ -15,6 +15,13 @@ class _ProductPageState extends State<ProductPage> {
   int quantity = 1;
 
   final TextEditingController _qtyController = TextEditingController(text: '1');
+  final List<String> _images = const [
+    'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
+    'https://picsum.photos/seed/variant1/1024/1024',
+    'https://picsum.photos/seed/variant2/1024/1024',
+    'https://picsum.photos/seed/variant3/1024/1024',
+  ];
+  int _imageIndex = 0;
 
   @override
   void dispose() {
@@ -57,24 +64,65 @@ class _ProductPageState extends State<ProductPage> {
                           color: Colors.grey[200],
                         ),
                         clipBehavior: Clip.antiAlias,
-                        child: Image.network(
-                          'https://shop.upsu.net/cdn/shop/files/PortsmouthCityMagnet1_1024x1024@2x.jpg?v=1752230282',
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              color: Colors.grey[300],
-                              child: const Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.image_not_supported, size: 64, color: Colors.grey),
-                                    SizedBox(height: 8),
-                                    Text('Image unavailable', style: TextStyle(color: Colors.grey)),
-                                  ],
-                                ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Expanded(
+                              child: Image.network(
+                                _images[_imageIndex],
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    color: Colors.grey[300],
+                                    child: const Center(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.image_not_supported, size: 64, color: Colors.grey),
+                                          SizedBox(height: 8),
+                                          Text('Image unavailable', style: TextStyle(color: Colors.grey)),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
+                            ),
+                            const SizedBox(height: 8),
+                            SizedBox(
+                              height: 70,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  for (int i = 0; i < _images.length; i++)
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 6),
+                                      child: InkWell(
+                                        onTap: () => setState(() => _imageIndex = i),
+                                        child: Container(
+                                          width: 70,
+                                          height: 70,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: i == _imageIndex ? const Color(0xFF4d2963) : const Color(0xFFE5E7EB),
+                                              width: i == _imageIndex ? 2 : 1,
+                                            ),
+                                            borderRadius: BorderRadius.circular(6),
+                                            color: Colors.white,
+                                          ),
+                                          clipBehavior: Clip.antiAlias,
+                                          child: Image.network(
+                                            _images[i],
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (context, error, stackTrace) => Container(color: Colors.grey[300]),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       );
 
@@ -100,7 +148,7 @@ class _ProductPageState extends State<ProductPage> {
                           ),
                           const SizedBox(height: 24),
                           const Text(
-                            'Description',
+                            'Tax Included',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -280,6 +328,21 @@ class _ProductPageState extends State<ProductPage> {
                                     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
                                   ),
                                   child: const Text('Buy with Shop'),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              GestureDetector(
+                                onTap: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('More payment options clicked')),
+                                  );
+                                },
+                                child: const Text(
+                                  'more payment options',
+                                  style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
                             ],
