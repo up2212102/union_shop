@@ -64,78 +64,17 @@ class HomeScreen extends StatelessWidget {
           children: [
             const Navbar(),
 
-            // Hero Section
-            SizedBox(
-              height: 400,
-              width: double.infinity,
-              child: Stack(
-                children: [
-                  // Background image
-                  Positioned.fill(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            'https://shop.upsu.net/cdn/shop/files/PortsmouthCityPostcard2_1024x1024@2x.jpg?v=1752232561',
-                          ),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.7),
-                        ),
-                      ),
-                    ),
-                  ),
-                  // Content overlay
-                  Positioned(
-                    left: 24,
-                    right: 24,
-                    top: 80,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Placeholder Hero Title',
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            height: 1.2,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        const Text(
-                          "This is placeholder text for the hero section.",
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            height: 1.5,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 32),
-                        ElevatedButton(
-                          onPressed: placeholderCallbackForButtons,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF4d2963),
-                            foregroundColor: Colors.white,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero,
-                            ),
-                          ),
-                          child: const Text(
-                            'BROWSE PRODUCTS',
-                            style: TextStyle(fontSize: 14, letterSpacing: 1),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+            // Hero Section (carousel background)
+            const _HeroCarousel(
+              imageUrls: [
+                'https://picsum.photos/seed/carousel1/1600/900',
+                'https://picsum.photos/seed/carousel2/1600/900',
+                'https://picsum.photos/seed/carousel3/1600/900',
+                'https://picsum.photos/seed/carousel4/1600/900',
+              ],
             ),
+
+            // (carousel moved into hero)
 
             // Products Section
             Container(
@@ -573,6 +512,260 @@ class _ConceptImage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _SimpleCarousel extends StatefulWidget {
+  final List<String> imageUrls;
+  const _SimpleCarousel({super.key, required this.imageUrls});
+
+  @override
+  State<_SimpleCarousel> createState() => _SimpleCarouselState();
+}
+
+class _SimpleCarouselState extends State<_SimpleCarousel> {
+  int _index = 0;
+
+  void _prev() {
+    setState(() {
+      _index = (_index - 1 + widget.imageUrls.length) % widget.imageUrls.length;
+    });
+  }
+
+  void _next() {
+    setState(() {
+      _index = (_index + 1) % widget.imageUrls.length;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final url = widget.imageUrls[_index];
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        AspectRatio(
+          aspectRatio: 16 / 9,
+          child: Image.network(
+            url,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                color: Colors.grey[300],
+                child: const Center(
+                  child: Icon(Icons.image_not_supported, color: Colors.grey),
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: _prev,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF4d2963),
+                foregroundColor: Colors.white,
+                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              ),
+              child: const Icon(Icons.chevron_left),
+            ),
+            const SizedBox(width: 16),
+            Text(
+              '${_index + 1} / ${widget.imageUrls.length}',
+              style: const TextStyle(fontSize: 14, color: Colors.black),
+            ),
+            const SizedBox(width: 16),
+            ElevatedButton(
+              onPressed: _next,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF4d2963),
+                foregroundColor: Colors.white,
+                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              ),
+              child: const Icon(Icons.chevron_right),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _HeroCarousel extends StatefulWidget {
+  final List<String> imageUrls;
+  const _HeroCarousel({super.key, required this.imageUrls});
+
+  @override
+  State<_HeroCarousel> createState() => _HeroCarouselState();
+}
+
+class _HeroCarouselState extends State<_HeroCarousel> {
+  int _index = 0;
+
+  void _prev() {
+    setState(() {
+      _index = (_index - 1 + widget.imageUrls.length) % widget.imageUrls.length;
+    });
+  }
+
+  void _next() {
+    setState(() {
+      _index = (_index + 1) % widget.imageUrls.length;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final url = widget.imageUrls[_index];
+    // Content per slide
+    final List<Map<String, String>> slides = [
+      {
+        'title': 'ESSENTIAL RANGE - OVER 20% OFF',
+        'desc': 'Save over 20% on our Essential Range.',
+        'cta': 'SHOP ESSENTIAL RANGE',
+        'route': '/sale',
+      },
+      {
+        'title': 'The Print Shack',
+        'desc': "Let's create something uniquely with our personalisation service",
+        'cta': 'Find out more',
+        'route': '/about',
+      },
+      {
+        'title': 'Hungry?',
+        'desc': 'We got this 🍕',
+        'cta': "Order Domino's Pizza now",
+        'route': '',
+      },
+      {
+        'title': "What's your next move...",
+        'desc': 'Are you with us?',
+        'cta': 'Find your student accomodation',
+        'route': '',
+      },
+    ];
+    final slide = slides[_index % slides.length];
+    return SizedBox(
+      height: 400,
+      width: double.infinity,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.network(
+              url,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: Colors.grey[300],
+                  child: const Center(
+                    child: Icon(Icons.image_not_supported, color: Colors.grey),
+                  ),
+                );
+              },
+            ),
+          ),
+          Positioned.fill(
+            child: Container(
+              color: Colors.black.withValues(alpha: 0.7),
+            ),
+          ),
+          Positioned(
+            left: 24,
+            right: 24,
+            top: 80,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  slide['title']!,
+                  style: const TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    height: 1.2,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  slide['desc']!,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    height: 1.5,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 32),
+                ElevatedButton(
+                  onPressed: () {
+                    final route = slide['route'] ?? '';
+                    if (route.isNotEmpty) {
+                      Navigator.pushNamed(context, route);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(slide['cta']!)),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF4d2963),
+                    foregroundColor: Colors.white,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero,
+                    ),
+                  ),
+                  child: Text(
+                    slide['cta']!,
+                    style: const TextStyle(fontSize: 14, letterSpacing: 1),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: _prev,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4d2963),
+                        foregroundColor: Colors.white,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 10),
+                      ),
+                      child: const Icon(Icons.chevron_left),
+                    ),
+                    const SizedBox(width: 16),
+                    Text(
+                      '${_index + 1} / ${widget.imageUrls.length}',
+                      style: const TextStyle(fontSize: 14, color: Colors.white),
+                    ),
+                    const SizedBox(width: 16),
+                    ElevatedButton(
+                      onPressed: _next,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4d2963),
+                        foregroundColor: Colors.white,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 10),
+                      ),
+                      child: const Icon(Icons.chevron_right),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
