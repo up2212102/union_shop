@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 
-class Navbar extends StatelessWidget {
+class Navbar extends StatefulWidget {
   const Navbar({super.key});
+
+  @override
+  State<Navbar> createState() => _NavbarState();
+}
+
+class _NavbarState extends State<Navbar> {
+  bool _showSearch = false;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +63,79 @@ class Navbar extends StatelessWidget {
                       )
                     : const SizedBox.shrink(),
               ),
-              // Right-side control (Account or menu)
+              // Right-side controls: icons on wide screens, menu on mobile
               if (isWide) ...[
-                const _NavLink(label: 'Account', route: '/auth'),
+                Row(
+                  children: [
+                    // Search input slides out to the left of the icon
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeInOut,
+                      width: _showSearch ? 220 : 0,
+                      height: 36,
+                      margin: EdgeInsets.only(right: _showSearch ? 8 : 0),
+                      child: _showSearch
+                          ? TextField(
+                              controller: _searchController,
+                              autofocus: true,
+                              decoration: InputDecoration(
+                                hintText: 'Search products…',
+                                contentPadding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.grey[300]!,
+                                  ),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: const Color(0xFF4d2963),
+                                  ),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                suffixIcon: IconButton(
+                                  tooltip: 'Close',
+                                  icon: const Icon(Icons.close, size: 18),
+                                  onPressed: () {
+                                    setState(() => _showSearch = false);
+                                  },
+                                ),
+                              ),
+                              onSubmitted: (q) {
+                                // Placeholder: route to collections with query snack
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Searching for "$q"')),
+                                );
+                              },
+                            )
+                          : const SizedBox.shrink(),
+                    ),
+                    IconButton(
+                      tooltip: _showSearch ? 'Hide search' : 'Search',
+                      icon: const Icon(Icons.search, color: Colors.grey),
+                      onPressed: () {
+                        setState(() => _showSearch = !_showSearch);
+                      },
+                    ),
+                    IconButton(
+                      tooltip: 'Cart',
+                      icon: const Icon(Icons.shopping_cart_outlined, color: Colors.grey),
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Cart is empty')),
+                        );
+                      },
+                    ),
+                    IconButton(
+                      tooltip: 'Account',
+                      icon: const Icon(Icons.person_outline, color: Colors.grey),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/auth');
+                      },
+                    ),
+                  ],
+                ),
               ] else ...[
                 Builder(
                   builder: (context) => IconButton(
