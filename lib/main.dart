@@ -257,6 +257,95 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
+                            const SizedBox(height: 48),
+                            LayoutBuilder(
+                              builder: (context, constraints) {
+                                final isWide = constraints.maxWidth > 700;
+                                final Widget content = Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Text(
+                                      'Add a Personal Touch',
+                                      style: TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                        letterSpacing: 0.5,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    const Text(
+                                      'First add your item of clothing to the cart then click\nbelow to add your text! One line of text contains 10\ncharacters!',
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black87,
+                                        height: 1.5,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: const Color(0xFF4d2963),
+                                        foregroundColor: Colors.white,
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 24,
+                                          vertical: 12,
+                                        ),
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.zero,
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        'CLICK HERE TO ADD TEXT',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          letterSpacing: 1,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                                if (isWide) {
+                                  return Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width: 200,
+                                        child: AspectRatio(
+                                          aspectRatio: 1,
+                                          child: Image.asset(
+                                            'assets/images/The_Union_Print_Shack_Logo_-_smaller_360x.png',
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 24),
+                                      Expanded(child: content),
+                                    ],
+                                  );
+                                } else {
+                                  return Column(
+                                    children: [
+                                      SizedBox(
+                                        width: 180,
+                                        child: AspectRatio(
+                                          aspectRatio: 1,
+                                          child: Image.asset(
+                                            'assets/images/The_Union_Print_Shack_Logo_-_smaller_360x.png',
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 16),
+                                      content,
+                                    ],
+                                  );
+                                }
+                              },
+                            ),
                           ],
                         ),
                       ),

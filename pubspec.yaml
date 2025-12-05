@@ -20,3 +20,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/The_Union_Print_Shack_Logo_-_smaller_360x.png
